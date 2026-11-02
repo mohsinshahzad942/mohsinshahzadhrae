@@ -482,12 +482,20 @@ addEventListener('resize',paint);paint();
     const ux=500,uy=260; /* centre of the HR word */
     const pt=svg.createSVGPoint();pt.x=ux;pt.y=uy;const sp=pt.matrixTransform(svg.getScreenCTM());
     ox=sp.x;oy=sp.y;svg.style.setProperty('--ox',ox+'px');svg.style.setProperty('--oy',oy+'px');step()}
-  function step(){const h=innerHeight,p=Math.min(1,Math.max(0,scrollY/h));
+  /* HR starts black and shifts to the site's deep navy as it zooms, so the hand-off is seamless */
+  const C0=[5,7,13],C1=[12,34,66];let done=false;
+  function finish(){if(done)return;done=true;intro.style.display='none';root.classList.add('popped');
+    const sp=document.querySelector('.pin-space'),y=scrollY;if(sp){sp.remove();scrollTo({top:Math.max(0,y-innerHeight),behavior:'instant'})}
+    removeEventListener('scroll',onScroll);}
+  function step(){if(done)return;const h=innerHeight,p=Math.min(1,Math.max(0,scrollY/h));
     svg.style.transform=`scale(${Math.pow(140,Math.pow(p,1.5)).toFixed(3)})`;
+    const k=Math.min(1,p/.75),c=C0.map((v,i)=>Math.round(v+(C1[i]-v)*k));t.setAttribute('fill',`rgb(${c})`);
     intro.style.opacity=p<.8?1:Math.max(0,1-(p-.8)/.07);root.classList.toggle('popped',p>=.8);
-    intro.style.visibility=p>=1?'hidden':'visible';
-    meta.style.opacity=Math.max(0,1-p*4);meta.style.transform=`translateY(${p*40}px)`;}
-  addEventListener('scroll',()=>requestAnimationFrame(step),{passive:true});
+    meta.style.opacity=Math.max(0,1-p*4);meta.style.transform=`translateY(${p*40}px)`;
+    if(p>=.88)finish();}
+  /* one-way: once the site has popped in, the intro is removed and scrolling up does not replay it */
+  const onScroll=()=>requestAnimationFrame(step);
+  addEventListener('scroll',onScroll,{passive:true});
   addEventListener('resize',origin);
   (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(origin);origin();
 })();
