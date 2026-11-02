@@ -195,7 +195,7 @@ body{text-shadow:var(--halo,none)}
 @media (max-width:1000px){.xgrid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.xgrid{grid-template-columns:1fr}}
 /* intro: giant HR cut out of a dark curtain; scrolling zooms through the H into the site */
-.pin-space{height:100vh}
+.pin-space{height:50vh}
 .pin > .hero{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px)}
 #intro{position:fixed;inset:0;z-index:50;pointer-events:none;will-change:opacity}
 #intro svg{position:absolute;inset:0;width:100%;height:100%;transform-origin:var(--ox,50%) var(--oy,50%);will-change:transform}
@@ -501,9 +501,9 @@ addEventListener('resize',paint);paint();
   /* HR starts black and shifts to the site's deep navy as it zooms, so the hand-off is seamless */
   const C0=[5,7,13],C1=[12,34,66];let done=false;
   function finish(){if(done)return;done=true;intro.style.display='none';root.classList.add('popped');
-    const sp=document.querySelector('.pin-space'),y=scrollY;if(sp){sp.remove();scrollTo({top:Math.max(0,y-innerHeight),behavior:'instant'})}
+    const sp=document.querySelector('.pin-space'),y=scrollY;if(sp){sp.remove();scrollTo({top:Math.max(0,y-innerHeight*.5),behavior:'instant'})}
     removeEventListener('scroll',onScroll);}
-  function step(){if(done)return;const h=innerHeight,p=Math.min(1,Math.max(0,scrollY/h));
+  function step(){if(done)return;const h=innerHeight*.5,p=Math.min(1,Math.max(0,scrollY/h));
     svg.style.transform=`scale(${Math.pow(140,Math.pow(p,1.5)).toFixed(3)})`;
     const k=Math.min(1,p/.75),c=C0.map((v,i)=>Math.round(v+(C1[i]-v)*k));t.setAttribute('fill',`rgb(${c})`);
     intro.style.opacity=p<.8?1:Math.max(0,1-(p-.8)/.07);root.classList.toggle('popped',p>=.8);
