@@ -186,6 +186,22 @@ body{text-shadow:var(--halo,none)}
 .dim::after{content:"";position:absolute;inset:0;background:#000;animation:breathe 7s ease-in-out infinite}
 @keyframes breathe{0%,100%{opacity:0}50%{opacity:.22}}
 
+
+/* intro: giant HR cut out of a dark curtain; scrolling zooms through the H into the site */
+.pin-space{height:100vh}
+.pin > .hero{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px)}
+#intro{position:fixed;inset:0;z-index:50;pointer-events:none;will-change:opacity}
+#intro svg{position:absolute;inset:0;width:100%;height:100%;transform-origin:var(--ox,50%) var(--oy,50%);will-change:transform}
+#intro .hrtext{font-family:var(--display);font-weight:800;letter-spacing:-.04em}
+#intro .meta{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:14px;text-align:center;color:#e8eeff;font-family:var(--mono);font-size:.78rem;letter-spacing:.3em;text-transform:uppercase}
+#intro .meta b{font-family:var(--display);font-weight:500;letter-spacing:.2em;font-size:clamp(.9rem,2.2vw,1.2rem)}
+#intro .mouse{width:22px;height:36px;border:2px solid rgba(232,238,255,.6);border-radius:12px;position:relative}
+#intro .mouse::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;margin-left:-1.5px;border-radius:2px;background:#3df2ff;animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{0%{opacity:0;transform:translateY(-3px)}40%{opacity:1}100%{opacity:0;transform:translateY(10px)}}
+html.no-intro #intro{display:none}
+html.no-intro .pin-space{display:none}
+html.no-intro .pin > .hero{position:relative;top:auto}
+
 /* scroll-driven reveals (content is fully visible where unsupported) */
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion:no-preference){
@@ -212,6 +228,18 @@ body{text-shadow:var(--halo,none)}
 
 
 <canvas id="field" aria-hidden="true"></canvas>
+<div id="intro" aria-hidden="true">
+  <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="hrg" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#2563eb"/><stop offset="1" stop-color="#10b981"/></linearGradient>
+      <mask id="hrmask" maskUnits="userSpaceOnUse" x="-6000" y="-6000" width="13000" height="13000"><rect x="-6000" y="-6000" width="13000" height="13000" fill="#fff"/><text id="hrt" class="hrtext" x="500" y="300" text-anchor="middle" dominant-baseline="central" font-size="400" fill="#000">HR</text></mask>
+    </defs>
+    <rect x="-6000" y="-6000" width="13000" height="13000" fill="#05070d" mask="url(#hrmask)"/>
+    <text id="hrv" class="hrtext" x="500" y="300" text-anchor="middle" dominant-baseline="central" font-size="400" fill="none" stroke="url(#hrg)" stroke-width="2.5">HR</text>
+  </svg>
+  <div class="meta" id="intro-meta"><b>Mohsin Shahzad</b><span>Human Resources · Abu Dhabi</span><div class="mouse"></div></div>
+</div>
+
 <div class="aurora" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
 <div class="noise" aria-hidden="true"></div>
 <div class="dim" id="dim" aria-hidden="true"></div>
@@ -231,7 +259,7 @@ body{text-shadow:var(--halo,none)}
 </nav>
 
 <main>
-<header class="hero" id="top">
+<div class="pin"><header class="hero" id="top">
   <div class="floor" aria-hidden="true"></div>
   <div class="wrap">
     <div>
@@ -251,7 +279,7 @@ body{text-shadow:var(--halo,none)}
       <span class="tag t2">◆ WPS · EOSB</span>
     </div>
   </div>
-</header>
+</header><div class="pin-space" aria-hidden="true"></div></div>
 
 <div class="marquee" aria-hidden="true">
   <div class="track">
@@ -438,6 +466,24 @@ function paint(){ticking=false;
 window.__paint=paint;
 addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(paint)}},{passive:true});
 addEventListener('resize',paint);paint();
+
+/* intro zoom */
+(()=>{const intro=document.getElementById('intro');if(!intro)return;
+  if(reduce){root.classList.add('no-intro');return}
+  const svg=intro.querySelector('svg'),t=document.getElementById('hrv'),meta=document.getElementById('intro-meta');
+  let ox=0,oy=0;
+  function origin(){svg.style.transform='none';const r=t.getBoundingClientRect();
+    /* aim at the H's left stem so the transparent stroke fills the screen */
+    ox=r.left+r.width*.085;oy=r.top+r.height*.5;svg.style.setProperty('--ox',ox+'px');svg.style.setProperty('--oy',oy+'px');step()}
+  function step(){const h=innerHeight,p=Math.min(1,Math.max(0,scrollY/h));
+    svg.style.transform=`scale(${Math.pow(140,Math.pow(p,1.5)).toFixed(3)})`;document.getElementById('hrv').style.opacity=Math.max(0,1-p*1.6);
+    intro.style.opacity=p<.82?1:Math.max(0,1-(p-.82)/.18);
+    intro.style.visibility=p>=1?'hidden':'visible';
+    meta.style.opacity=Math.max(0,1-p*4);meta.style.transform=`translateY(${p*40}px)`;}
+  addEventListener('scroll',()=>requestAnimationFrame(step),{passive:true});
+  addEventListener('resize',origin);
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(origin);origin();
+})();
 
 /* copy */
 document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById(b.dataset.target),v=t.textContent.trim();
