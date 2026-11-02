@@ -178,8 +178,8 @@ section.block::before{content:"";position:absolute;left:0;right:0;top:0;height:1
 /* continuous scroll color + dimming */
 body{background:var(--bg)}
 body{text-shadow:var(--halo,none)}
-.grad{filter:var(--halo-f,none)}
-.btn,.copy{text-shadow:none}
+
+.btn,.copy,.grad{text-shadow:none!important}
 .aurora{opacity:var(--aur)}
 .noise{opacity:calc(.05 * var(--aur))!important}
 .dim{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.85) 100%);opacity:var(--dim,.35);transition:opacity .35s ease}
