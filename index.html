@@ -187,6 +187,13 @@ body{text-shadow:var(--halo,none)}
 @keyframes breathe{0%,100%{opacity:0}50%{opacity:.22}}
 
 
+.xgrid{grid-template-columns:repeat(4,1fr)}
+.xp{display:flex;flex-direction:column;gap:10px;padding:22px}
+.xp .xn{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--c1)}
+.xp h3{font-family:var(--display);font-size:1.08rem;font-weight:600;line-height:1.2;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.xp p{margin:0;font-size:.92rem;color:var(--muted)}
+@media (max-width:1000px){.xgrid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.xgrid{grid-template-columns:1fr}}
 /* intro: giant HR cut out of a dark curtain; scrolling zooms through the H into the site */
 .pin-space{height:100vh}
 .pin > .hero{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px)}
@@ -340,17 +347,26 @@ html.no-intro .pin > .hero{position:relative;top:auto}
 
 <section class="block" id="highlights">
   <div class="wrap">
-    <div class="head reveal"><h2>High<span class="grad">lights</span></h2><span class="label"><b>03</b> / what I deliver</span></div>
-    <div class="hl">
-      <article class="panel tilt reveal"><div class="icon">₪</div><div class="num grad">WPS</div><p>Accurate, on-time payroll for a large workforce, reconciled with timesheets, leave records and exchange houses.</p></article>
-      <article class="panel tilt reveal d1"><div class="icon">⚖</div><div class="num grad">Law</div><p>UAE Labour Law compliance: contracts, leave, EOSB, separations, NAFIS and Emiratisation reporting.</p></article>
-      <article class="panel tilt reveal d2"><div class="icon">⌘</div><div class="num grad">HRMS</div><p>HRMS/ERP administration, dashboards and workforce analytics that management uses to plan manpower.</p></article>
-    </div>
+    <div class="head reveal"><h2>High<span class="grad">lights</span></h2><span class="label"><b>03</b> / core expertise</span></div>
+    <div class="hl xgrid">
+        <article class="panel tilt xp reveal"><span class="xn">01</span><h3>Employee Payroll</h3><p>End-to-end payroll for a large workforce: accuracy, timely transfers and monthly reconciliation.</p></article>
+        <article class="panel tilt xp reveal d1"><span class="xn">02</span><h3>WPS Compliance</h3><p>Wage Protection System processing with exchange houses and payroll providers, resolving salary discrepancies.</p></article>
+        <article class="panel tilt xp reveal d2"><span class="xn">03</span><h3>HRIS &amp; HRMS</h3><p>HRMS/ERP administration, employee records, system implementation and process optimisation.</p></article>
+        <article class="panel tilt xp reveal"><span class="xn">04</span><h3>Employee Relations</h3><p>Grievance handling, disciplinary procedures and consistent application of HR policy.</p></article>
+        <article class="panel tilt xp reveal d1"><span class="xn">05</span><h3>HR Administration</h3><p>Employment documentation, leave records, attendance and timesheet verification.</p></article>
+        <article class="panel tilt xp reveal d2"><span class="xn">06</span><h3>Manpower Planning</h3><p>Workforce planning and deployment with project teams across construction sites.</p></article>
+        <article class="panel tilt xp reveal"><span class="xn">07</span><h3>NAFIS Compliance</h3><p>NAFIS and Emiratisation targets: workforce planning, documentation and reporting.</p></article>
+        <article class="panel tilt xp reveal d1"><span class="xn">08</span><h3>HR Data Analytics</h3><p>HR dashboards, payroll reports and workforce analytics for management decisions.</p></article>
+        <article class="panel tilt xp reveal d2"><span class="xn">09</span><h3>UAE Labour Law</h3><p>Contracts, leave entitlements, separations and regulatory compliance.</p></article>
+        <article class="panel tilt xp reveal"><span class="xn">10</span><h3>EOSB &amp; Final Settlements</h3><p>End-of-service benefit calculations and employee separation procedures.</p></article>
+        <article class="panel tilt xp reveal d1"><span class="xn">11</span><h3>Talent Acquisition &amp; Onboarding</h3><p>Recruitment, candidate selection, interviewing, onboarding and employment visa processing.</p></article>
+        <article class="panel tilt xp reveal d2"><span class="xn">12</span><h3>Employee Welfare &amp; Benefits</h3><p>Labour accommodation, group medical insurance, enrolments, renewals and claims.</p></article>
+      </div>
     <div class="sub">
       <div class="panel reveal"><p class="label" style="margin:0 0 16px">Skills</p>
         <ul class="chips">
-          <li>HR Policies</li><li>Interviewing</li><li>Candidate Selection</li><li>Payroll &amp; WPS</li><li>HRMS / ERP</li>
-          <li>UAE Labour Law</li><li>Employee Relations</li><li>Manpower Planning</li><li>Visa Processing</li><li>Emiratisation / NAFIS</li><li>HR Analytics</li>
+          <li>HR Policies</li><li>Interviewing</li><li>Candidate Selection</li><li>Payroll Reconciliation</li><li>WPS</li><li>HRMS / ERP</li><li>UAE Labour Law</li>
+          <li>EOSB</li><li>Employee Lifecycle</li><li>Workforce Administration</li><li>Visa Processing</li><li>Emiratisation</li><li>NAFIS</li><li>Medical Insurance</li><li>HR Dashboards</li><li>Process Optimisation</li>
         </ul></div>
       <div class="panel reveal d1"><p class="label" style="margin:0 0 16px">Education &amp; languages</p>
         <p style="margin:0">Bachelor's degree, COMSATS Institute of Information Technology (2012–2016)</p>
