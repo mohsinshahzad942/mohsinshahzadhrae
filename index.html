@@ -200,6 +200,8 @@ body{text-shadow:var(--halo,none)}
 #intro .hint{font-size:.7rem;letter-spacing:.32em;animation:hintpulse 2s ease-in-out infinite}
 @keyframes hintpulse{50%{opacity:.45}}
 @keyframes wheel{0%{opacity:0;transform:translateY(-3px)}40%{opacity:1}100%{opacity:0;transform:translateY(10px)}}
+html.intro-on .pin > .hero .wrap{transition:transform .6s cubic-bezier(.2,.9,.25,1.15),opacity .45s ease}
+html.intro-on:not(.popped) .pin > .hero .wrap{transform:scale(.88);opacity:0}
 html.no-intro #intro{display:none}
 html.no-intro .pin-space{display:none}
 html.no-intro .pin > .hero{position:relative;top:auto}
@@ -236,8 +238,8 @@ html.no-intro .pin > .hero{position:relative;top:auto}
       <linearGradient id="hrg" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#2563eb"/><stop offset="1" stop-color="#10b981"/></linearGradient>
       <mask id="hrmask" maskUnits="userSpaceOnUse" x="-6000" y="-6000" width="13000" height="13000"><rect x="-6000" y="-6000" width="13000" height="13000" fill="#fff"/><text id="hrt" class="hrtext" x="500" y="260" text-anchor="middle" dominant-baseline="central" font-size="330" fill="#000">HR</text></mask>
     </defs>
-    <rect x="-6000" y="-6000" width="13000" height="13000" fill="#ffffff" mask="url(#hrmask)"/>
-    <text id="hrv" class="hrtext" x="500" y="260" text-anchor="middle" dominant-baseline="central" font-size="330" fill="none" stroke="#05070d" stroke-width="3">HR</text>
+    <rect x="-6000" y="-6000" width="13000" height="13000" fill="#ffffff"/>
+    <text id="hrv" class="hrtext" x="500" y="260" text-anchor="middle" dominant-baseline="central" font-size="330" fill="#05070d">HR</text>
   </svg>
   <div class="meta" id="intro-meta"><b>Mohsin Shahzad</b><span>Human Resources · Abu Dhabi</span><div class="mouse"></div><span class="hint">Scroll down</span></div>
 </div>
@@ -472,16 +474,17 @@ addEventListener('resize',paint);paint();
 /* intro zoom */
 (()=>{const intro=document.getElementById('intro');if(!intro)return;
   if(reduce){root.classList.add('no-intro');return}
+  root.classList.add('intro-on');
   const svg=intro.querySelector('svg'),t=document.getElementById('hrv'),meta=document.getElementById('intro-meta');
   let ox=0,oy=0;
   function origin(){svg.style.transform='none';
-    /* zoom from the centre of the word; the site shows through the letters */
+    /* zoom from the centre of the word; the site pops in at 80% of the zoom (and reverses on scroll up) */
     const ux=500,uy=260; /* centre of the HR word */
     const pt=svg.createSVGPoint();pt.x=ux;pt.y=uy;const sp=pt.matrixTransform(svg.getScreenCTM());
     ox=sp.x;oy=sp.y;svg.style.setProperty('--ox',ox+'px');svg.style.setProperty('--oy',oy+'px');step()}
   function step(){const h=innerHeight,p=Math.min(1,Math.max(0,scrollY/h));
     svg.style.transform=`scale(${Math.pow(140,Math.pow(p,1.5)).toFixed(3)})`;
-    intro.style.opacity=p<.3?1:Math.max(0,1-Math.pow((p-.3)/.4,1.4));
+    intro.style.opacity=p<.8?1:Math.max(0,1-(p-.8)/.07);root.classList.toggle('popped',p>=.8);
     intro.style.visibility=p>=1?'hidden':'visible';
     meta.style.opacity=Math.max(0,1-p*4);meta.style.transform=`translateY(${p*40}px)`;}
   addEventListener('scroll',()=>requestAnimationFrame(step),{passive:true});
